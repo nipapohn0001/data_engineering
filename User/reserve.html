@@ -1,0 +1,85 @@
+<!-- reserve.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Reservation</title>
+    <link rel="stylesheet" href="reserve.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Reserve a Book</h2>
+        <form id="reservationForm" action="/User/submit-reservation" method="POST">
+            <label for="borrower_id">Borrower ID:</label>
+            <input type="text" id="borrower_id" name="borrower_id" required>
+
+            <label for="fullname_borrower">Full Name:</label>
+            <input type="text" id="fullname_borrower" name="fullname_borrower" required>
+
+            <label for="book_title">Book Title:</label>
+            <input type="text" id="book_title" name="book_title" required>
+
+            <label for="book_id">Book ID:</label>
+            <input type="text" id="book_id" name="book_id" required>
+
+            <label for="author_name">Author:</label>
+            <input type="text" id="author_name" name="author_name" required>
+
+            <label for="date_borrowed">Reservation Date:</label>
+            <input type="date" id="date_borrowed" name="date_borrowed" required>
+
+            <label for="due_date_returned">Returned Date:</label>
+            <input type="date" id="due_date_returned" name="due_date_returned" required>
+
+            <button type="submit" class="reserve-btn">Reserve Now</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+            addReservation();   // Call the function to add reservation
+        });
+
+        function addReservation() {
+            let borrowerId = document.getElementById('borrower_id').value;
+            let fullName = document.getElementById('fullname_borrower').value;
+            let bookTitle = document.getElementById('book_title').value;
+            let bookId = document.getElementById('book_id').value;
+            let author = document.getElementById('author_name').value;
+            let reservationDate = new Date(document.getElementById('date_borrowed').value).toISOString();
+            let returnedDate = new Date(document.getElementById('due_date_returned').value).toISOString();
+
+            // Validate required fields
+            if (!borrowerId || !fullName || !bookTitle || !bookId || !author || !reservationDate || !returnedDate) {
+                alert('Please fill in all the required fields.');
+                return;
+            }
+
+            let newReservation = {
+                borrowerId,
+                fullName,
+                bookTitle,
+                bookId,
+                author,
+                reservationDate,
+                returnedDate
+            };
+
+            fetch('/User/submit-reservation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newReservation)
+            })
+            .then(response => response.ok ? alert('Reservation saved successfully!') : alert('Error saving reservation.'))
+            .catch(error => alert('Error saving reservation.'));
+        }
+    </script>
+</body>
+
+</html>

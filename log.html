@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="admin2.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <!-- Username -->
+                <div class="textbox">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <!-- Password -->
+                <div class="textbox">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <div class="signup-link">
+                Don't have an account? <a href="#">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get user input values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Basic validation for username and password
+            if (username === "admin" && password === "admin123") {
+                // Save user data to localStorage (for demonstration purposes)
+                localStorage.setItem('username', username);
+                localStorage.setItem('role', 'admin');
+                window.location.href = 'admin.html'; // Redirect to admin page
+            } else if (username === "user" && password === "user123") {
+                localStorage.setItem('username', username);
+                localStorage.setItem('role', 'user');
+                window.location.href = '/User/index.html'; // Redirect to user page
+            } else {
+                alert('Incorrect username or password');
+            }
+        });
+    </script>
+</body>
+
+</html>

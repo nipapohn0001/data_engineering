@@ -1,0 +1,61 @@
+/* General styles for the whole page */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.reservation-status {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-status h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.reservation-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.reservation-item p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.reservation-item hr {
+    margin-top: 15px;
+    border: 1px solid #ccc;
+}
+
+#reservation-list {
+    margin-top: 20px;
+}
+
+.reservation-item:last-child {
+    border-bottom: none;
+}

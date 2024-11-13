@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservation Status</title>
+  <link rel="stylesheet" href="status.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="reserve.html">Reserve</a>
+      <a href="status.html">Status</a>
+    </nav>
+  </header>
+
+  <section class="reservation-status">
+    <h1>Your Reservation History</h1>
+    <div id="reservation-list"></div>
+  </section>
+
+  <script>
+    function displayReservations(reservations) {
+  let reservationList = document.getElementById('reservation-list');
+  reservationList.innerHTML = '';
+
+  reservations.forEach(reservation => {
+    let reservationItem = document.createElement('div');
+    reservationItem.classList.add('reservation-item');
+
+    let reservationDetails = `
+      <p>Borrower ID: ${reservation.borrowerId}</p>
+      <p>Full Name: ${reservation.fullName}</p>
+      <p>Book Title: ${reservation.bookTitle}</p>
+      <p>Book ID: ${reservation.bookId}</p>
+      <p>Author: ${reservation.author}</p>
+      <p>Reservation Date: ${reservation.reservationDate}</p>
+      <p>Returned Date: ${reservation.returnedDate || 'Not Returned'}</p>
+    `;
+
+    reservationItem.innerHTML = reservationDetails;
+    reservationList.appendChild(reservationItem);
+  });
+}
+
+// Fetch the initial reservation data on page load
+fetch('/User/get-reservations')
+  .then(response => response.json())
+  .then(data => {
+    displayReservations(data);
+  })
+  .catch(error => {
+    console.error('Error fetching reservations:', error);
+  });
+  </script>
+</body>
+
+</html>

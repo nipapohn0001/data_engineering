@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="edit-book.css">
+    <title>Edit Book</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/User/index.html">Home</a>
+            <a href="/User/bookpage.html">All Books</a>
+        </nav>
+    </header>
+
+    <section class="edit-book">
+        <h1>Edit Book</h1>
+        <form id="edit-book-form">
+            <label for="book-title">Title:</label>
+            <input type="text" id="book-title" name="book-title" required>
+
+            <label for="author-name">Author:</label>
+            <input type="text" id="author-name" name="author-name" required>
+
+            <label for="book-id">Book ID:</label>
+            <input type="text" id="book-id" name="book-id" readonly>
+
+            <label for="stock-count">In Stock:</label>
+            <input type="number" id="stock-count" name="stock-count" min="0" required>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </section>
+
+    <script>
+        // Function to check if the user is an admin
+        function checkAdminAccess() {
+            const role = localStorage.getItem('role');
+            if (role !== 'admin') {
+                alert('You do not have permission to access this page.');
+                window.location.href = '/User/index.html'; // Redirect to User page
+            }
+        }
+    
+        // Function to load book details based on the book_id parameter
+        function loadBookDetails() {
+            const params = new URLSearchParams(window.location.search);
+            const bookId = params.get('book_id');
+    
+            if (bookId) {
+                // Fetch book data from the server based on the book ID
+                fetch(`/get-book?book_id=${bookId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('book-title').value = data.book_title;
+                        document.getElementById('author-name').value = data.author_name;
+                        document.getElementById('book-id').value = data.book_id;
+                        document.getElementById('stock-count').value = data.stock_count;
+                    })
+                    .catch(error => {
+                        console.error('Error loading book details:', error);
+                    });
+            }
+        }
+    
+        // Function to handle the form submission and update book details
+        document.getElementById('edit-book-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+    
+            const bookDetails = {
+                book_id: document.getElementById('book-id').value,
+                book_title: document.getElementById('book-title').value,
+                author_name: document.getElementById('author-name').value,
+                stock_count: parseInt(document.getElementById('stock-count').value, 10)
+            };
+    
+            // Send the updated book details to the server
+            fetch('/update-book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bookDetails)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Book details updated successfully!');
+                window.location.href = '/User/bookpage.html'; // Redirect to book page after updating
+            })
+            .catch(error => {
+                console.error('Error updating book:', error);
+            });
+        });
+    
+        // Call the functions to check admin access and load book details when the page loads
+        window.onload = function () {
+            checkAdminAccess();
+            loadBookDetails();
+        };
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.css">
+    <title>Admin - Reservation Management</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/User/index.html">Home</a>
+            <a href="/User/reserve.html">Reserve</a>
+            <a href="/bookpage.html">All Books</a>
+        </nav>
+    </header>
+
+    <section class="admin-dashboard">
+        <h1>Reservation Management</h1>
+        <div id="reservation-list">
+            <!-- Reservation data will be populated here -->
+        </div>
+    </section>
+    
+
+    <script>
+        // Function to fetch and display reservations
+        function fetchReservations() {
+            fetch('/get-reservations') // API endpoint to fetch reservations
+                .then(response => response.json())
+                .then(data => {
+                    const reservationList = document.getElementById('reservation-list');
+                    reservationList.innerHTML = '';  // Clear previous content
+
+                    data.forEach(reservation => {
+                        let reservationItem = document.createElement('div');
+                        reservationItem.classList.add('reservation-item');
+                        reservationItem.innerHTML = `
+                            <p><strong>Borrower ID:</strong> ${reservation.borrower_id}</p>
+                            <p><strong>Full Name:</strong> ${reservation.fullname_borrower}</p>
+                            <p><strong>Book Title:</strong> ${reservation.book_title}</p>
+                            <p><strong>Book ID:</strong> ${reservation.book_id}</p>
+                            <p><strong>Author:</strong> ${reservation.author_name}</p>
+                            <p><strong>Reservation Date:</strong> ${new Date(reservation.date_borrowed).toLocaleDateString()}</p>
+                            <p><strong>Returned Date:</strong> ${reservation.due_date_returned ? new Date(reservation.due_date_returned).toLocaleDateString() : 'Not Returned'}</p>
+                        `;
+                        reservationList.appendChild(reservationItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching reservations:', error);
+                });
+        }
+
+        // Load reservations when the page loads
+        window.onload = fetchReservations;
+    </script>
+</body>
+
+</html>

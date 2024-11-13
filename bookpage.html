@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="bookpage.css">
+    <title>All Books in Stock</title>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">Projects</a>
+
+        <nav>
+            <a href="/User/index.html">Home</a>
+            <a href="/User/status.html">Status</a>
+            <a href="/User/bookpage.html">All Books</a>
+        </nav>
+    </header>
+
+    <section class="all-books">
+        <h2>All Books in Stock</h2>
+        <div class="books">
+            <div class="book" data-stock="3">
+                <img src="/User/img/rectangle-6.webp" alt="Book 1">
+                <h4>Title: Harry Potter and the Half-Blood Prince</h4>
+                <p>Author: J. K. Rowling</p>
+                <p>Book ID: 001</p>
+                <p>In Stock: <span class="stock-count">3</span></p>
+                <a href="/User/reserve.html" class="btn">Reserve</a>
+                <button class="btn admin-only">Edit</button>
+            </div>
+
+            <div class="book" data-stock="0">
+                <img src="/User/img/rectangle-7.webp" alt="Book 2">
+                <h4>Title: Harry Potter and the Deathly Hallows</h4>
+                <p>Author: J. K. Rowling</p>
+                <p>Book ID: 002</p>
+                <p>In Stock: <span class="stock-count">0</span></p>
+                <a href="/User/reserve.html" class="btn">Reserve</a>
+                <button class="btn admin-only">Edit</button>
+            </div>
+
+            <div class="book" data-stock="5">
+                <img src="/User/img/rectangle-8.webp" alt="Book 3">
+                <h4>Title: Harry Potter and the Cursed Child - Parts One and Two</h4>
+                <p>Author: J. K. Rowling</p>
+                <p>Book ID: 003</p>
+                <p>In Stock: <span class="stock-count">5</span></p>
+                <a href="/User/reserve.html" class="btn">Reserve</a>
+                <button class="btn admin-only">Edit</button>
+            </div>
+
+            <div class="book" data-stock="2">
+                <img src="/User/img/81QuEGw8VPL._AC_UF1000,1000_QL80_.jpg" alt="Book 4">
+                <h4>Title: The Great Gatsby</h4>
+                <p>Author: F. Scott Fitzgerald</p>
+                <p>Book ID: 004</p>
+                <p>In Stock: <span class="stock-count">2</span></p>
+                <a href="/User/reserve.html" class="btn">Reserve</a>
+                <button class="btn admin-only">Edit</button>
+            </div>
+
+            <div class="book" data-stock="0">
+                <img src="/User/img/book-cover-To-Kill-a-Mockingbird-many-1961.webp" alt="Book 5">
+                <h4>Title: To Kill a Mockingbird</h4>
+                <p>Author: Harper Lee</p>
+                <p>Book ID: 005</p>
+                <p>In Stock: <span class="stock-count">0</span></p>
+                <a href="/User/reserve.html" class="btn">Reserve</a>
+                <button class="btn admin-only">Edit</button>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const books = document.querySelectorAll(".book");
+
+            books.forEach(book => {
+                const stock = parseInt(book.getAttribute("data-stock"), 10);
+                const reserveButton = book.querySelector(".btn");
+
+                if (stock === 0) {
+                    reserveButton.classList.add("disabled");
+                    reserveButton.textContent = "Out of Stock";
+                    reserveButton.href = "#";
+                    reserveButton.style.pointerEvents = "none";
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isAdmin = localStorage.getItem("role") === "admin";
+
+            document.querySelectorAll(".admin-only").forEach(button => {
+                if (isAdmin) {
+                    button.style.display = "block";
+                    button.addEventListener("click", function () {
+                        const bookId = this.closest(".book").querySelector("p:contains('Book ID')").textContent.split(": ")[1];
+                        window.location.href = `/edit-book.html?book_id=${bookId}`;
+                    });
+                } else {
+                    button.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
